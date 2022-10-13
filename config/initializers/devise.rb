@@ -272,14 +272,17 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  #require 'omniauth-google-oauth2'
-  # Rails.application.config.middleware.use OmniAuth::Builder do
-  #OmniAuth.config.allowed_request_methods = [:post, :get]
-  config.omniauth :github, '5d321a9afba385c00005', '8d4bc0d35365cc8c56e5f07f932b77c287dcc8e1', scope: 'user'
-  config.omniauth :google_oauth2, '112002901492-76vifaguhb17a27s526k3abksn8k7kv2.apps.googleusercontent.com', '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' 
-  #   provider :google_oauth2, Rails.application.credentials[:112002901492-76vifaguhb17a27s526k3abksn8k7kv2.apps.googleusercontent.com], 
-  #       Rails.application.credentials[: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], {scope: "email"}
+  
+  # if Rails.env.development?
+  #   config.omniauth :github, '5d321a9afba385c00005', '8d4bc0d35365cc8c56e5f07f932b77c287dcc8e1', scope: 'user'
+  # elsif Rails.env.production?
+  #   config.omniauth :github, '5d321a9afba385c00005', '8d4bc0d35365cc8c56e5f07f932b77c287dcc8e1', scope: 'user'
   # end
+  
+  config.omniauth :github, Rails.application.credentials[Rails.env.to_sym][:github][:id], Rails.application.credentials[Rails.env.to_sym][:github][:secret],
+  
+  config.omniauth :google_oauth2, Rails.application.credentials.dig(:google_oauth2, :id), Rails.application.credentials.dig(:google_oauth2, :secret)
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
