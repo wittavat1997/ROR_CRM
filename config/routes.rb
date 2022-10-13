@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users , controllers: { 
-   confirmations: 'confirmations' ,
-   omniauth_callbacks: 'users/omniauth_callbacks'}
-  resources :users, only: [:index, :show, :destroy] do
-      member do
-        patch :ban
-    end
-  end
+    confirmations: 'users/confirmations' ,
+    omniauth_callbacks: 'users/omniauth_callbacks'}
+  resources :users, only: [:index, :show ]
+  # resources :users, only: [:index, :show, :destroy] do
+  #     member do
+  #       patch :ban
+  #   end
+  #end
   
   devise_scope :user do
   get '/users/sign_out' => 'devise/sessions#destroy' 

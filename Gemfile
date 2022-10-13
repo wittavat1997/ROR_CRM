@@ -3,11 +3,14 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.0.1"
 
-gem 'omniauth'
-gem "omniauth-rails_csrf_protection"
-gem 'devise'
+gem "omniauth", "~> 1.9.1" #fix Not found. Authentication passthru by version 1.9.1.
+gem 'omniauth-google-oauth2'
+gem 'omniauth-github'
+gem 'omniauth-facebook' #should be acutal domain then AWS domain cannot usage it.
+gem 'omniauth-twitter' #waiting access from twitter
+gem "devise" 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.4"
+gem "rails", "~> 7.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
