@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, 
          :confirmable,:trackable, :lockable,
         :omniauthable, omniauth_providers: [:google_oauth2, :github, :twitter, :facebook]
+        
+  include Roleable
   
   def self.from_omniauth(access_token)
     data = access_token.info
@@ -24,4 +26,14 @@ class User < ApplicationRecord
     user.confirmed_at = Time.now #autoconfirm user from omniauth
     user
   end
+  
+  after_create do
+    # assign default role
+    self.update(student: true)
+  end
+  
+  def to_s
+    email
+  end
+  
 end
