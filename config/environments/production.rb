@@ -14,6 +14,26 @@ Rails.application.configure do
   authentication: :plain,
   enable_starttls_auto: true
 }
+
+Rails.application.config.middleware.use ExceptionNotification::Rack,
+  ignore_exceptions: ['ActionView::TemplateError'] + ExceptionNotifier.ignored_exceptions,
+  email:  {
+    email_prefix: '[PREFIX] ',
+    sender_address: %{"app error" <faozansamlee@gmail.com>},
+    exception_recipients: %w{Wittava.st@ku.th}
+  },
+  error_grouping: true,
+  # error_grouping_period: 5.minutes,    # the time before an error is regarded as fixed
+  # error_grouping_cache: Rails.cache,   # for other applications such as Sinatra, use one instance of ActiveSupport::Cache::Store
+  #
+  # notification_trigger: specify a callback to determine when a notification should be sent,
+  #   the callback will be invoked with two arguments:
+  #     exception: the exception raised
+  #     count: accumulated errors count for this exception
+  #
+  # notification_trigger: lambda { |exception, count| count % 10 == 0 }
+  
+  
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
