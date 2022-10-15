@@ -3,6 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.0.1"
 
+gem 'invisible_captcha'
+gem 'devise_invitable', '~> 2.0.0'
 gem "omniauth", "~> 1.9.1" #fix Not found. Authentication passthru by version 1.9.1.
 gem 'omniauth-google-oauth2'
 gem 'omniauth-github'

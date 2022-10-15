@@ -15,11 +15,20 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body style="background-color:powderblue;">
     <%= render "layouts/header" %>
     <%= render "layouts/messages" %>
     <div class="container">
+      <br/>
       <%= yield %>
     </div>
   </body>
+  <footer class="bg-dark text-light">
+    <div class="container">
+       Footer content
+       <row></row>
+       <%= link_to "Privacy Policy", privacy_policy_path %>
+       <p/>
+    </div>
+   </footer>
 </html>

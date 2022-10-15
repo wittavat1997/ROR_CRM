@@ -1,35 +1,47 @@
-
-<h2>
-Editing roles for <%= @user %>    
-</h2>
-<%= form_for(@user) do |f| %>
-
-    <% if @user.errors.any? %>
-         <div id="error_explanation">
-             <h2>
-                <%= pluralize(@user.errors.count, "error") %>
-                prohibited this user from being saved: 
-             </h2>
-             <ul>
-                <% @user.errors.full_messages.each do |message| %>
-                <li>
-                    <%= message %>
-                </li>
-                <% end %>
-             </ul>
-         </div>
-    <% end %>
+<div class="card shadow">
+  <div class="card-header">
+    <h2>
+       Editing roles for <%= @user %> 
+    </h2> 
+  </div>
+  <div class="card-body">
+    <%= form_for(@user) do |f| %>
     
-    <% User::ROLES.each do |role| %>
-        <label>
+      <% if @user.errors.any? %>
+        <div id="error_explanation">
+          <h2>
+            <%= pluralize(@user.errors.count, "error") %>
+            prohibited this user from being saved:
+          </h2>
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li>
+                <%= message %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+
+      <% if current_user.admin? %>
+        <br>
+        <% User::ROLES.each do |role| %>
+          <label>
             <%= f.check_box role %>
             <%= role.to_s.humanize %>
-        </label>
-        <br>
+          </label>
+          <br>
+        <% end %>
+      <% end %>
+    
+      <%= f.button :submit %>
+    
     <% end %>
-    
-    <%= f.button :submit %>
-<% end %>
-    
-<%= link_to "Cancel", user_path(@user) %>
-    
+  </div>
+  <div class="card-footer">
+    <%= link_to "Cancel", user_path(@user), class: "btn btn-sm btn-secondary" %>
+  </div>
+</div>

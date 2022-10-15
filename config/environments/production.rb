@@ -1,6 +1,19 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.action_mailer.default_url_options = {host: "example.herokuapp.com", protocol: "https"}
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  port: 587,
+  address: 'email-smtp.ap-southeast-1.amazonaws.com',
+  user_name: 'AKIA35UGDYSM7ORYM6H2',
+  password: 'BAi+roQV+IMM0pWzLhEpen0GAv6ASjiMJ/LW3yFHlWcb',
+  authentication: :plain,
+  enable_starttls_auto: true
+}
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.

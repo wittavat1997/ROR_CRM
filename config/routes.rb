@@ -5,16 +5,19 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
+  devise_scope :user do # working missed with resources :users
+    get "/users/sign_out" => "devise/sessions#destroy"
+  end
     
   resources :users, only: [:index, :show, :destroy, :edit, :update] do # working missed with devise scope
       member do
         patch :ban
+        patch :resend_confirmation_instructions
+        patch :resend_invitation
     end
   end
   
-  # devise_scope :user do # working missed with resources :users
-  #   get "/users/sign_out" => "devise/sessions#destroy"
-  # end
+  
   
   
   
@@ -25,7 +28,7 @@ Rails.application.routes.draw do
   
  
   root "static_pages#landing_page"
-  get "ptivacy_policy", to: 'static_pages#privacy_policy'
+  get "privacy_policy", to: 'static_pages#privacy_policy'
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Defines the root path route ("/")

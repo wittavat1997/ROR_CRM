@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+    # authorization
+    before_action :require_admin, only: [:edit, :update, :ban, :destroy , resend_confirmation_instructions]
+    before_action :require_admin_or_invitor, only: [:resent_invitation]
     
     def index 
         @users = User.all.order(created_at: :desc)
@@ -23,6 +26,27 @@ class UsersController < ApplicationController
         @user = User.find(params[:id])
     end
     
+    def resend_confirmation_instructions
+        @user = User.find(params[:id])
+        if @user.confirmed? == false && @user.created_by_invite? == false
+            @user.resend_confirmation_instructions
+            redirect_to @user, notice: "Confirmation instructions were resent"
+        else
+            redirect_to @user, alert: "User already confirmed"
+        end
+    end
+    
+    def resent_invitation
+        @user = User.find(params[:id])
+        if @user.created_by_invite? && @user.invitation_accepted? == false && @user.confirmed? == false %>
+            @user.invite!
+            redirect_to @user, notice: "Invitation were resent"
+        else
+            redirect_to @user, alert: "User already confirmed"
+        end
+    end
+    
+    
     def ban
         @user = User.find(params[:id])
         if  @user.access_locked?
@@ -43,6 +67,20 @@ class UsersController < ApplicationController
     private
     def user_params
         params.require(:user).permit(*User::ROLES)
+    end
+    
+    def require_admin
+       # unless current_user.admin? || current_user.teacher?
+       unless current_user.admin?
+            redirect_to root_path, alert: "You are not authorized to perform this action"
+        end
+    end
+    
+    def require_admin_or_invitor
+        @user = User.find(params[:id])
+        unless current_user.admin? || @user.invited_by == current_user
+            redirect_to root_path, alert: "You are not authorizated to perform this action"
+        end
     end
     
 end
