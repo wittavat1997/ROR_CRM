@@ -2,6 +2,7 @@ class UsersController < ApplicationController
     # authorization
     before_action :require_admin, only: [:edit, :update, :ban, :destroy , resend_confirmation_instructions]
     before_action :require_admin_or_invitor, only: [:resent_invitation]
+    before_action :require_admin_or_owner, only: [:edit, :update]
     
     def index 
         @users = User.all.order(created_at: :desc)
@@ -38,7 +39,7 @@ class UsersController < ApplicationController
     
     def resent_invitation
         @user = User.find(params[:id])
-        if @user.created_by_invite? && @user.invitation_accepted? == false && @user.confirmed? == false %>
+        if @user.created_by_invite? && @user.invitation_accepted? == false && @user.confirmed? == false 
             @user.invite!
             redirect_to @user, notice: "Invitation were resent"
         else
@@ -49,12 +50,16 @@ class UsersController < ApplicationController
     
     def ban
         @user = User.find(params[:id])
-        if  @user.access_locked?
-            @user.unlock_access!
-        else    
-            @user.lock_access!
+        if @user == current_user
+            redirect_to @user, alert: "You can not ban yourself"
+        else
+            if  @user.access_locked?
+                @user.unlock_access!
+            else    
+                @user.lock_access!
+            end
+            redirect_to @user, notice: "User access locked: #{@user.access_locked?}"
         end
-        redirect_to @user, notice: "User access locked: #{@user.access_locked?}"
     end
     
     def destroy
@@ -66,13 +71,17 @@ class UsersController < ApplicationController
     
     private
     def user_params
-        params.require(:user).permit(*User::ROLES)
+        list_allowed_params = []
+        list_allowed_params += [:name] if current_user == @user || current_user.admin?
+        list_allowed_params += [*User::ROLES] if current_user.admin?
+        params.require(:user).permit(list_allowed_params)
+        #params.require(:user).permit(*User::ROLES, :name)
     end
     
     def require_admin
        # unless current_user.admin? || current_user.teacher?
-       unless current_user.admin?
-            redirect_to root_path, alert: "You are not authorized to perform this action"
+        unless current_user.admin?
+            redirect_to (request.referrer || root_path), alert: "You are not authorizated to perform this action"
         end
     end
     
@@ -83,4 +92,11 @@ class UsersController < ApplicationController
         end
     end
     
+    def require_admin_or_owner
+        @user = User.find(params[:id])
+        unless current_user.admin? || current_user == @user
+            redirect_to (request.referrer || root_path), alert: "You are not authorizated to perform this action"
+        end
+    end
 end
+    
