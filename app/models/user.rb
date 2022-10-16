@@ -38,4 +38,9 @@ class User < ApplicationRecord
     email
   end
   
+  
+  def to_label
+    to_s
+  end
+  
 end

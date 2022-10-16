@@ -7,6 +7,16 @@
     <%= f.association :user %>
     <%= f.association :classroom %>
     <%= f.association :serives %>
+    <%= f.input :start_time, as: :time, :minute_step => 15%>
+    <%= f.input :days %>
+      <br>
+        <% Course::DAY_OF_WEEK.each do |day| %>
+          <label>
+            <%= f.check_box day %>
+            <%= day.to_s.humanize %>
+          </label>
+          <br>
+        <% end %>
   </div>
 
   <div class="form-actions">

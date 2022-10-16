@@ -20,6 +20,10 @@
         <th>Serives</th>
         
         <th>Actions</th>
+        
+        <th>Start time</th>
+        
+        <th>Days</th>
       </tr>
     </thead>
     <tbody>
@@ -32,6 +36,10 @@
             <td><%= course.classroom %></td>
           
             <td><%= course.serives %></td>
+            
+            <td><%= course.start_time&.strftime("%H:%M") %></td>
+    
+            <td><%= course.active_days.join(", ") %></td>
           
           <td>
             <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-sm btn-warning' %>
