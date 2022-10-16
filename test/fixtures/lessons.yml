@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  classroom: one
+  course: one
+  status: MyString
+  start: 2022-10-16 08:02:25
+
+two:
+  user: two
+  classroom: two
+  course: two
+  status: MyString
+  start: 2022-10-16 08:02:25
