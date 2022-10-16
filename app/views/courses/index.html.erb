@@ -48,7 +48,7 @@
             <td><%= course.schedule %></td>
             
             <td><% course,schedule.occurrences(Time.now + 1.month).each do |occurrences| %>
-                <%= occurrences&.strftime("%d/%b/%y") %>
+                <%= occurrences %>
                 <br>
                 <% end %>
                 <%= link_to "Generate lesson", generate_lessons_course_path(course), method: :patch %>
