@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #25364a;">
   <a class="navbar-brand" href="/">
     <i class="fas fa-user-lock"></i>
-    Brand
+    CollegeCRM
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -12,11 +12,40 @@
         <div class="fa fa-home"></div>
         Home
       <% end %>
-      <%= link_to users_path, class: "nav-link #{'active font-weight-bold' if current_page?(users_path)}" do %>
-        <div class="fa fa-users"></div>
-        Users
+      <% if current_user %>
+        <%= link_to users_path, class: "nav-link #{'active font-weight-bold' if current_page?(users_path)}" do %>
+          <div class="fa fa-users"></div>
+          Users
+        <% end %>
+        <div class="form-inline my-2 my-lg-0">
+          <%= form_tag(users_path, method: :get) do %>
+            <div class="input-group">
+              <%= text_field_tag :email, params[:email], autocomplete: 'off', placeholder: "user email", class: 'form-control-sm' %>
+              <span class="input-group-append">
+                <button class="btn btn-primary btn-sm" type="submit">
+                  <span aria-hidden="true" class="fa fa-search"></span>
+                </button>
+              </span>
+            </div>
+          <% end %>
+        </div>
+        <%= link_to calendar_path, class: "nav-link #{'active font-weight-bold' if current_page?(calendar_path)}" do %>
+          <div class="fa fa-calendar-alt"></div>
+          Calendar
+        <% end %>
+        <%= link_to classrooms_path, class: "nav-link #{'active font-weight-bold' if current_page?(classrooms_path)}" do %>
+          <div class="fa fa-door-open"></div>
+          Classrooms
+        <% end %>
+        <%= link_to services_path, class: "nav-link #{'active font-weight-bold' if current_page?(services_path)}" do %>
+          <div class="fa fa-tags"></div>
+          Services
+        <% end %>
+        <%= link_to courses_path, class: "nav-link #{'active font-weight-bold' if current_page?(courses_path)}" do %>
+          <div class="fa fa-user-friends"></div>
+          Courses
+        <% end %>
       <% end %>
-      <%= link_to "Invite User", new_user_invitation_path, class: "nav-link #{'active font-weight-bold' if current_page?(new_user_invitation_path)}" %>
     </ul>
     <ul class="navbar-nav mr-right">
       <% if current_user %>
@@ -27,8 +56,12 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <%= link_to user_path(current_user), class: "dropdown-item #{'active font-weight-bold' if current_page?(user_path(current_user))}" do %>
-              <div class="fa fa-door-open"></div>
+              <div class="fa fa-user"></div>
               <b>My profile</b>
+            <% end %>
+            <%= link_to edit_user_path(current_user), class: "dropdown-item #{'active font-weight-bold' if current_page?(edit_user_path(current_user))}" do %>
+              <div class="fa fa-cog"></div>
+              <b>Edit profile</b>
             <% end %>
             <%= link_to edit_user_registration_path, class: "dropdown-item #{'active font-weight-bold' if current_page?(edit_user_registration_path)}" do %>
               <div class="fa fa-cog"></div>
