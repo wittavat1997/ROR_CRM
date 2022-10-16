@@ -3,6 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.0.1"
 
+gem 'ice_cube'
 gem 'simple_form'
 gem 'invisible_captcha'
 gem 'devise_invitable', '~> 2.0.0'
