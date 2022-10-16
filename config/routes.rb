@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :lessons
-  resources :courses
+  resources :courses do
+    member do
+      patch :generate_lessons #check into controller
+    end
+  end
   resources :services
   resources :classrooms
   devise_for :users , controllers: { 
@@ -21,15 +25,7 @@ Rails.application.routes.draw do
     end
   end
   
-  
-  
-  
-  
-  
-  
 
-
-  
  
   root "static_pages#landing_page"
   get "privacy_policy", to: 'static_pages#privacy_policy'

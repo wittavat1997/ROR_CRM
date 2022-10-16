@@ -5,6 +5,13 @@ class CoursesController < ApplicationController
   def index
     @courses = Course.all
   end
+  
+  def generate_lessons
+    @course.schedule.occurrences(Time.now + 1.month).each do |occurrences|
+      @course.lessons.find_or_create_by(start: occurrences, user: @course.user, classroom: @course.classroom)
+    end
+    redirect_to @course, notice: "generate_lessons - ok"
+  end
 
   # GET /courses/1 or /courses/1.json
   def show
